@@ -4,6 +4,8 @@ import (
 	"base-golang-rest-api-docker-container/config"
 	"database/sql"
 	"fmt"
+
+	_ "github.com/lib/pq"
 )
 
 func InitDBConnection() (*sql.DB, error) {
