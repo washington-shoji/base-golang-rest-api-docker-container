@@ -38,3 +38,14 @@ go get github.com/labstack/echo/v4
 go get github.com/lib/pq
 go get github.com/joho/godotenv
 go get github.com/google/uuid
+
+### Adding to GitHub repository
+
+
+echo "# project-name" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git branch -M main
+git remote add origin project-url
+git push -u origin main
