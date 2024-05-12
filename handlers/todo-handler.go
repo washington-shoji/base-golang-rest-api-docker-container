@@ -50,7 +50,7 @@ func (h *TodoHandler) UpdateTodo(c echo.Context) error {
 		return err
 	}
 
-	return c.JSON(http.StatusOK, "Todo Created!")
+	return c.JSON(http.StatusOK, "Todo Updated!")
 }
 
 func (h *TodoHandler) DeleteTodo(c echo.Context) error {

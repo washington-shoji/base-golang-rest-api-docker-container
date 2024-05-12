@@ -102,7 +102,7 @@ func (t *TodoRepositoryImpl) FindTodoByID(id uuid.UUID) (*models.Todo, error) {
 	WHERE id = $1
 	`
 
-	rows, err := t.DB.Query(query)
+	rows, err := t.DB.Query(query, id)
 	if err != nil {
 		return nil, err
 	}
