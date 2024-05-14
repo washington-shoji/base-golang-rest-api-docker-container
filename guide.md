@@ -50,3 +50,22 @@ git commit -m "first commit"
 git branch -M main
 git remote add origin project-url
 git push -u origin main
+
+## Docker image creation reference
+
+https://docs.docker.com/language/golang/build-images/
+https://snyk.io/blog/containerizing-go-applications-with-docker/
+
+### Build Docker image locally
+
+sudo docker build -t <Docker image name>:<TAG> -f Dockerfile .
+
+sudo docker build -t base-golang-rest-api-docker-container:multistage -f Dockerfile .
+
+### Check the list of Docker images 
+
+sudo docker image ls
+
+### Run docker image with TAG locally
+
+sudo docker run --read-only <Docker Image>:<TAG>
