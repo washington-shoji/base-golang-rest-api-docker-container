@@ -9,9 +9,9 @@ import (
 )
 
 func InitDBConnection() (*sql.DB, error) {
-	connStr := fmt.Sprintf("user=%s "+
+	connStr := fmt.Sprintf("host=%s user=%s "+
 		"password=%s dbname=%s sslmode=disable",
-		config.EnvConfig("DB_USER"), config.EnvConfig("DB_PASSWORD"), config.EnvConfig("DB_NAME"))
+		config.EnvConfig("DB_HOST"), config.EnvConfig("DB_USER"), config.EnvConfig("DB_PASSWORD"), config.EnvConfig("DB_NAME"))
 	db, err := sql.Open("postgres", connStr)
 	if err != nil {
 		return nil, err
