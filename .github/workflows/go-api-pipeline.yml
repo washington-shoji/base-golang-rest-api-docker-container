@@ -65,6 +65,10 @@ jobs:
         echo TEST_DATABASE_HOST=localhost >> $GITHUB_ENV
         echo TEST_DATABASE_PORT=5433 >> $GITHUB_ENV
 
+    - name: Load schema
+      run: |
+        PGPASSWORD=$TEST_POSTGRES_PASSWORD psql -h $TEST_DATABASE_HOST -p $TEST_DATABASE_PORT -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB    
+
     - name: Wait for Postgres to be healthy
       run: |
         echo "Waiting for Test Postgres to be healthy..."
@@ -77,10 +81,6 @@ jobs:
 
     - name: Set up dependencies
       run: go mod download
-
-    - name: Load schema
-      run: |
-        PGPASSWORD=$TEST_POSTGRES_PASSWORD psql -h $TEST_DATABASE_HOST -p $TEST_DATABASE_PORT -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB
 
     - name: Run integration tests
       run: go test -v ./services/todo_service_integration_test.go
