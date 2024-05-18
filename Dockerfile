@@ -20,11 +20,14 @@ COPY go.mod ./
 
 # download Go modules and dependencies
 RUN go mod download
+RUN go mod tidy
 
 # copy directory files i.e all files ending with .go
 COPY *.go ./
 COPY . .
-COPY .env .
+
+# if using a .env file but not recommended 
+# COPY .env .
 
 # compile application
 # RUN go build -o /build
@@ -40,7 +43,8 @@ WORKDIR /app
 
 COPY --from=build /app/go-api .
 
-COPY .env /app
+# if using a .env file but not recommended
+# COPY .env /app
 
 # COPY --from=build /etc/passwd /etc/passwd
 
