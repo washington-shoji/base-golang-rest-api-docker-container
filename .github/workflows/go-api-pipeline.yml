@@ -9,6 +9,26 @@ on:
       - main
 
 jobs:
+  mock-tests:
+    name: Run Mock Tests
+    runs-on: ubuntu-latest
+    needs: integration-tests
+
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.22.3
+
+    - name: Set up dependencies
+      run: go mod download
+
+    - name: Run mock tests
+      run: go test ./... -v -run Test.*Mock
+
   integration-tests:
     name: Run Integration Tests
     runs-on: ubuntu-latest
@@ -50,6 +70,7 @@ jobs:
         echo "Waiting for Test Postgres to be healthy..."
         until docker-compose exec postgres pg_isready -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB; do
           echo "$(date) - Waiting for Test Postgres..."
+          docker-compose logs postgres
           sleep 5
         done
         echo "Test Postgres is ready!"
@@ -60,30 +81,10 @@ jobs:
     - name: Run integration tests
       run: go test -v ./services/todo_service_integration_test.go
 
-  mock-tests:
-    name: Run Mock Tests
-    runs-on: ubuntu-latest
-    needs: integration-tests
-
-    steps:
-    - name: Check out code
-      uses: actions/checkout@v4
-
-    - name: Set up Go
-      uses: actions/setup-go@v3
-      with:
-        go-version: 1.22.3
-
-    - name: Set up dependencies
-      run: go mod download
-
-    - name: Run mock tests
-      run: go test ./... -v -run Test.*Mock
-
   build:
     name: Build Application
     runs-on: ubuntu-latest
-    needs: [integration-tests, mock-tests]
+    needs: [mock-tests, integration-tests]
 
     steps:
     - name: Check out code
@@ -114,6 +115,7 @@ jobs:
         echo "Waiting for Postgres to be healthy..."
         until docker-compose exec postgresdb pg_isready -U $POSTGRES_USER -d $POSTGRES_DB; do
           echo "$(date) - Waiting for Postgres..."
+          docker-compose logs postgresdb
           sleep 5
         done
         echo "Postgres is ready!"
