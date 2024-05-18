@@ -36,14 +36,10 @@ jobs:
     services:
       postgres:
         image: postgres:latest
-        env:
-          POSTGRES_USER: ${{ secrets.TEST_POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.TEST_POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.TEST_POSTGRES_DB }}
         ports:
           - 5432:5432
         options: >-
-          --health-cmd "pg_isready -U ${{ secrets.TEST_POSTGRES_USER }} -d ${{ secrets.TEST_POSTGRES_DB }}" 
+          --health-cmd "pg_isready" 
           --health-interval 10s 
           --health-timeout 5s 
           --health-retries 5
@@ -57,10 +53,18 @@ jobs:
       with:
         go-version: 1.19
 
+    - name: Set environment variables
+      run: |
+        echo TEST_POSTGRES_USER=${{ secrets.TEST_POSTGRES_USER }} >> $GITHUB_ENV
+        echo TEST_POSTGRES_PASSWORD=${{ secrets.TEST_POSTGRES_PASSWORD }} >> $GITHUB_ENV
+        echo TEST_POSTGRES_DB=${{ secrets.TEST_POSTGRES_DB }} >> $GITHUB_ENV
+        echo TEST_DATABASE_HOST=localhost >> $GITHUB_ENV
+        echo TEST_DATABASE_PORT=5432 >> $GITHUB_ENV
+
     - name: Wait for Postgres to be healthy
       run: |
         echo "Waiting for Test Postgres to be healthy..."
-        until docker exec -T $(docker ps -q -f name=postgres) pg_isready -U ${{ secrets.TEST_POSTGRES_USER }} -d ${{ secrets.TEST_POSTGRES_DB }}; do
+        until docker exec -T $(docker ps -q -f name=postgres) pg_isready -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB; do
           echo "Waiting for Test Postgres..."
           sleep 5
         done
@@ -71,7 +75,7 @@ jobs:
 
     - name: Load schema
       run: |
-        PGPASSWORD=${{ secrets.TEST_POSTGRES_PASSWORD }} psql -h localhost -U ${{ secrets.TEST_POSTGRES_USER }} -d ${{ secrets.TEST_POSTGRES_DB }} -f testdata/schema.sql
+        PGPASSWORD=$TEST_POSTGRES_PASSWORD psql -h $TEST_DATABASE_HOST -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB -f testdata/schema.sql
 
     - name: Run integration tests
       run: go test -v ./services/todo_service_integration_test.go
