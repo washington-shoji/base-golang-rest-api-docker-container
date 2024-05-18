@@ -20,12 +20,9 @@ var todoRepository = repositories.NewTodoRepositoryImpl(db)
 
 func setup() {
 	var err error
-	connStr := fmt.Sprintf("postgres://%s:%s@%s:%s/%s?sslmode=disable",
-		os.Getenv("TEST_POSTGRES_USER"),
-		os.Getenv("TEST_POSTGRES_PASSWORD"),
-		os.Getenv("TEST_DATABASE_HOST"),
-		os.Getenv("TEST_DATABASE_PORT"),
-		os.Getenv("TEST_POSTGRES_DB"),
+	connStr := fmt.Sprintf("host=%s user=%s "+
+		"password=%s dbname=%s sslmode=disable",
+		os.Getenv("TEST_DATABASE_HOST"), os.Getenv("TEST_POSTGRES_USER"), os.Getenv("TEST_POSTGRES_PASSWORD"), os.Getenv("TEST_POSTGRES_DB"),
 	)
 
 	db, err = sql.Open("postgres", connStr)
