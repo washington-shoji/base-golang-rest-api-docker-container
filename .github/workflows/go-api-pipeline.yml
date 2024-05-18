@@ -36,6 +36,10 @@ jobs:
     services:
       postgres:
         image: postgres:latest
+        env:
+          POSTGRES_USER: ${{ secrets.TEST_POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.TEST_POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.TEST_POSTGRES_DB }}
         ports:
           - 5432:5432
         options: >-
@@ -72,10 +76,6 @@ jobs:
 
     - name: Set up dependencies
       run: go mod download
-
-    - name: Load schema
-      run: |
-        PGPASSWORD=$TEST_POSTGRES_PASSWORD psql -h $TEST_DATABASE_HOST -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB -f testdata/schema.sql
 
     - name: Run integration tests
       run: go test -v ./services/todo_service_integration_test.go
