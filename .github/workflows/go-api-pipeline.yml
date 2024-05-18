@@ -78,6 +78,10 @@ jobs:
     - name: Set up dependencies
       run: go mod download
 
+    - name: Load schema
+      run: |
+        PGPASSWORD=$TEST_POSTGRES_PASSWORD psql -h $TEST_DATABASE_HOST -p $TEST_DATABASE_PORT -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB
+
     - name: Run integration tests
       run: go test -v ./services/todo_service_integration_test.go
 
