@@ -19,8 +19,7 @@ WORKDIR /app
 COPY go.mod ./
 
 # download Go modules and dependencies
-RUN go mod download
-RUN go mod tidy
+RUN go mod download && go mod tidy
 
 # copy directory files i.e all files ending with .go
 COPY *.go ./
