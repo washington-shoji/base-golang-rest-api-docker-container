@@ -69,3 +69,13 @@ sudo docker image ls
 ### Run docker image with TAG locally
 
 sudo docker run --read-only <Docker Image>:<TAG>
+
+## Go Test
+
+### Run all tests flat
+
+go test ./...
+
+### Run all tests verbose 
+
+go test ./... -v
