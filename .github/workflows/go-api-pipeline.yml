@@ -34,14 +34,14 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      postgres:
+      postgresdb_test:
         image: postgres:latest
         env:
           POSTGRES_USER: ${{ secrets.TEST_POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.TEST_POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.TEST_POSTGRES_DB }}
         ports:
-          - 5432:5432
+          - 5433:5432
         options: >-
           --health-cmd "pg_isready" 
           --health-interval 10s 
@@ -68,9 +68,9 @@ jobs:
     - name: Wait for Postgres to be healthy
       run: |
         echo "Waiting for Test Postgres to be healthy..."
-        until docker-compose exec postgres pg_isready -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB; do
+        until docker-compose exec postgresdb_test pg_isready -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB; do
           echo "$(date) - Waiting for Test Postgres..."
-          docker-compose logs postgres
+          docker-compose logs postgresdb_test
           sleep 5
         done
         echo "Test Postgres is ready!"
