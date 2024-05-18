@@ -40,17 +40,23 @@ jobs:
     - name: Build Docker image
       run: docker-compose build
 
+    - name: Start Docker Compose in detached mode
+      run: docker-compose up -d
+
+    - name: Wait for Postgres to be healthy
+      run: |
+        echo "Waiting for Postgres to be healthy..."
+        while ! docker-compose exec postgresdb pg_isready -U $POSTGRES_USER -d $POSTGRES_DB; do
+          echo "Waiting for Postgres..."
+          sleep 5
+        done
+        echo "Postgres is ready!"
+
     - name: Run tests in Docker Compose
       run: docker-compose run app go test ./... -v
 
     - name: Lint the Dockerfile
       run: docker run --rm -i hadolint/hadolint < Dockerfile
-
-    - name: Run docker-compose up
-      run: docker-compose up -d
-
-    - name: Run tests
-      run: docker-compose exec app go test ./... -v
 
     - name: Tear down Docker Compose
       run: docker-compose down
