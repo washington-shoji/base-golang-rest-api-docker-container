@@ -22,6 +22,21 @@ jobs:
     - name: Set up QEMU
       uses: docker/setup-qemu-action@v2
 
+    - name: Set environment variables
+      run: |
+        echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> $GITHUB_ENV
+        echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> $GITHUB_ENV
+        echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> $GITHUB_ENV
+        echo DATABASE_HOST=${{ secrets.DATABASE_HOST }} >> $GITHUB_ENV
+        echo DATABASE_PORT=${{ secrets.DATABASE_PORT }} >> $GITHUB_ENV
+        echo TEST_POSTGRES_USER=${{ secrets.TEST_POSTGRES_USER }} >> $GITHUB_ENV
+        echo TEST_POSTGRES_PASSWORD=${{ secrets.TEST_POSTGRES_PASSWORD }} >> $GITHUB_ENV
+        echo TEST_POSTGRES_DB=${{ secrets.TEST_POSTGRES_DB }} >> $GITHUB_ENV
+        echo TEST_DATABASE_HOST=${{ secrets.TEST_DATABASE_HOST }} >> $GITHUB_ENV
+        echo TEST_DATABASE_PORT=${{ secrets.TEST_DATABASE_PORT }} >> $GITHUB_ENV
+        echo PGADMIN_DEFAULT_EMAIL=${{ secrets.PGADMIN_DEFAULT_EMAIL }} >> $GITHUB_ENV
+        echo PGADMIN_DEFAULT_PASSWORD=${{ secrets.PGADMIN_DEFAULT_PASSWORD }} >> $GITHUB_ENV
+
     - name: Build Docker image
       run: docker-compose build
 
