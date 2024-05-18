@@ -49,7 +49,7 @@ jobs:
       run: |
         echo "Waiting for Test Postgres to be healthy..."
         until docker-compose exec postgres pg_isready -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB; do
-          echo "Waiting for Test Postgres..."
+          echo "$(date) - Waiting for Test Postgres..."
           sleep 5
         done
         echo "Test Postgres is ready!"
@@ -79,7 +79,6 @@ jobs:
 
     - name: Run mock tests
       run: go test ./... -v -run Test.*Mock
-
 
   build:
     name: Build Application
@@ -114,7 +113,7 @@ jobs:
       run: |
         echo "Waiting for Postgres to be healthy..."
         until docker-compose exec postgresdb pg_isready -U $POSTGRES_USER -d $POSTGRES_DB; do
-          echo "Waiting for Postgres..."
+          echo "$(date) - Waiting for Postgres..."
           sleep 5
         done
         echo "Postgres is ready!"
