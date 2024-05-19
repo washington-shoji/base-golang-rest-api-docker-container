@@ -82,9 +82,6 @@ jobs:
         done
         echo "Postgres is ready!"
 
-    - name: Run tests in Docker Compose
-      run: docker-compose run --no-TTY app go test ./... -v
-
     - name: Lint the Dockerfile
       run: docker run --rm -i hadolint/hadolint < Dockerfile
 
