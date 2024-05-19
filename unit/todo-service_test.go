@@ -1,8 +1,9 @@
-package services
+package unit
 
 import (
 	"base-golang-rest-api-docker-container/mocks"
 	"base-golang-rest-api-docker-container/models"
+	"base-golang-rest-api-docker-container/services"
 	"testing"
 
 	"github.com/google/uuid"
@@ -12,7 +13,7 @@ import (
 
 func TestCreateTodo_Success(t *testing.T) {
 	mockRepo := new(mocks.MockTodoRepository)
-	todoService := NewTodoService(mockRepo)
+	todoService := services.NewTodoService(mockRepo)
 
 	todo := &models.Todo{
 		Label:     "Test Todo",
@@ -29,7 +30,7 @@ func TestCreateTodo_Success(t *testing.T) {
 
 func TestUpdateTodo_Success(t *testing.T) {
 	mockRepo := new(mocks.MockTodoRepository)
-	todoService := NewTodoService(mockRepo)
+	todoService := services.NewTodoService(mockRepo)
 
 	todoID := uuid.New()
 	todo := &models.Todo{
@@ -49,7 +50,7 @@ func TestUpdateTodo_Success(t *testing.T) {
 
 func TestDeleteTodo_Success(t *testing.T) {
 	mockRepo := new(mocks.MockTodoRepository)
-	todoService := NewTodoService(mockRepo)
+	todoService := services.NewTodoService(mockRepo)
 
 	todoID := uuid.New()
 	todo := &models.Todo{
@@ -67,7 +68,7 @@ func TestDeleteTodo_Success(t *testing.T) {
 
 func TestFindAllTodos_Success(t *testing.T) {
 	mockRepo := new(mocks.MockTodoRepository)
-	todoService := NewTodoService(mockRepo)
+	todoService := services.NewTodoService(mockRepo)
 
 	todos := []*models.Todo{
 		{
@@ -93,7 +94,7 @@ func TestFindAllTodos_Success(t *testing.T) {
 
 func TestFindTodoByID_Success(t *testing.T) {
 	mockRepo := new(mocks.MockTodoRepository)
-	todoService := NewTodoService(mockRepo)
+	todoService := services.NewTodoService(mockRepo)
 
 	todoID := uuid.New()
 	todo := &models.Todo{

@@ -1,8 +1,9 @@
-package services
+package integration
 
 import (
 	"base-golang-rest-api-docker-container/models"
 	"base-golang-rest-api-docker-container/repositories"
+	"base-golang-rest-api-docker-container/services"
 	"database/sql"
 	"fmt"
 	"log"
@@ -16,13 +17,11 @@ import (
 
 var db *sql.DB
 
-var todoRepository = repositories.NewTodoRepositoryImpl(db)
-
 func setup() {
 	var err error
 	connStr := fmt.Sprintf("host=%s user=%s "+
 		"password=%s dbname=%s sslmode=disable",
-		os.Getenv("TEST_DATABASE_HOST"), os.Getenv("TEST_POSTGRES_USER"), os.Getenv("TEST_POSTGRES_PASSWORD"), os.Getenv("TEST_POSTGRES_DB"),
+		os.Getenv("DATABASE_HOST"), os.Getenv("POSTGRES_USER"), os.Getenv("POSTGRES_PASSWORD"), os.Getenv("POSTGRES_DB"),
 	)
 
 	db, err = sql.Open("postgres", connStr)
@@ -41,6 +40,7 @@ func setup() {
 	if err != nil {
 		log.Fatalf("Failed to execute schema: %v", err)
 	}
+
 }
 
 func teardown() {
@@ -57,8 +57,8 @@ func TestMain(m *testing.M) {
 }
 
 func TestCreateTodoIntegration(t *testing.T) {
-	todoRepo := todoRepository
-	todoService := NewTodoService(todoRepo)
+	todoRepo := repositories.NewTodoRepositoryImpl(db)
+	todoService := services.NewTodoService(todoRepo)
 
 	todo := &models.Todo{
 		Label:     "Integration Test Todo",
@@ -75,8 +75,8 @@ func TestCreateTodoIntegration(t *testing.T) {
 }
 
 func TestUpdateTodoIntegration(t *testing.T) {
-	todoRepo := todoRepository
-	todoService := NewTodoService(todoRepo)
+	todoRepo := repositories.NewTodoRepositoryImpl(db)
+	todoService := services.NewTodoService(todoRepo)
 
 	todoID := uuid.New()
 	_, err := db.Exec("INSERT INTO todos (id, label, completed) VALUES ($1, $2, $3)", todoID, "Old Label", false)
@@ -100,8 +100,8 @@ func TestUpdateTodoIntegration(t *testing.T) {
 }
 
 func TestDeleteTodoIntegration(t *testing.T) {
-	todoRepo := todoRepository
-	todoService := NewTodoService(todoRepo)
+	todoRepo := repositories.NewTodoRepositoryImpl(db)
+	todoService := services.NewTodoService(todoRepo)
 
 	todoID := uuid.New()
 	_, err := db.Exec("INSERT INTO todos (id, label, completed) VALUES ($1, $2, $3)", todoID, "Delete Me", false)
@@ -117,8 +117,8 @@ func TestDeleteTodoIntegration(t *testing.T) {
 }
 
 func TestFindAllTodosIntegration(t *testing.T) {
-	todoRepo := todoRepository
-	todoService := NewTodoService(todoRepo)
+	todoRepo := repositories.NewTodoRepositoryImpl(db)
+	todoService := services.NewTodoService(todoRepo)
 
 	_, err := db.Exec("INSERT INTO todos (id, label, completed) VALUES ($1, $2, $3)", uuid.New(), "Todo 1", false)
 	assert.NoError(t, err)
@@ -131,8 +131,8 @@ func TestFindAllTodosIntegration(t *testing.T) {
 }
 
 func TestFindTodoByIDIntegration(t *testing.T) {
-	todoRepo := todoRepository
-	todoService := NewTodoService(todoRepo)
+	todoRepo := repositories.NewTodoRepositoryImpl(db)
+	todoService := services.NewTodoService(todoRepo)
 
 	todoID := uuid.New()
 	_, err := db.Exec("INSERT INTO todos (id, label, completed) VALUES ($1, $2, $3)", todoID, "Find Me", false)
