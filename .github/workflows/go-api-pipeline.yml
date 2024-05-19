@@ -58,7 +58,7 @@ jobs:
           POSTGRES_PASSWORD: ${{ secrets.TEST_POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.TEST_POSTGRES_DB }}
         options: >-
-          --health-cmd "pg_isready -U ${{ POSTGRES_USER }} -d ${{ POSTGRES_PASSWORD }}" 
+          --health-cmd "pg_isready -U TEST_POSTGRES_USER -d TEST_POSTGRES_DB" 
           --health-interval 10s 
           --health-timeout 5s 
           --health-retries 5
@@ -90,7 +90,7 @@ jobs:
     - name: Wait for Postgres to be healthy
       run: |
         echo "Waiting for Test Postgres to be healthy..."
-        while ! docker exec -T $(docker ps -q -f name=postgres) pg_isready -U ${{ secrets.TEST_POSTGRES_USER }} -d ${{ secrets.TEST_POSTGRES_DB }}; do
+        while ! docker exec -T $(docker ps -q -f name=postgres) pg_isready -U ${{ TEST_POSTGRES_USER -d TEST_POSTGRES_DB; do
           echo "Waiting for Test Postgres..."
           sleep 5
         done
