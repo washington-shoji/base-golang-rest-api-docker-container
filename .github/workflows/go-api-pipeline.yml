@@ -10,7 +10,7 @@ on:
 
 jobs:
   mock-tests:
-    name: Run Mock Tests
+    name: Run Mock/Unit Tests
     runs-on: ubuntu-latest
 
     steps:
