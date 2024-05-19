@@ -90,7 +90,7 @@ jobs:
     - name: Wait for Postgres to be healthy
       run: |
         echo "Waiting for Test Postgres to be healthy..."
-        while ! docker exec -T $(docker ps -q -f name=postgres) pg_isready -U TEST_POSTGRES_USER -d TEST_POSTGRES_DB; do
+        while ! docker-componse exec -T $(docker ps -q -f name=postgres) pg_isready -U TEST_POSTGRES_USER -d TEST_POSTGRES_DB; do
           echo "Waiting for Test Postgres..."
           sleep 5
         done
