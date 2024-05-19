@@ -32,7 +32,7 @@ services:
       POSTGRES_USER: ${POSTGRES_USER}
       POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
       POSTGRES_DB: ${POSTGRES_DB}
-      # DATABASE_HOST: ${DB_HOST}
+      DATABASE_HOST: ${DB_HOST}
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${POSTGRES_USER}", "-d", "${POSTGRES_DB}"]
       interval: 10s
@@ -54,7 +54,7 @@ services:
       POSTGRES_USER: ${TEST_POSTGRES_USER}
       POSTGRES_PASSWORD: ${TEST_POSTGRES_PASSWORD}
       POSTGRES_DB: ${TEST_POSTGRES_DB}
-      # DATABASE_HOST: ${TEST_DB_HOST}
+      DATABASE_HOST: ${TEST_DB_HOST}
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "${TEST_POSTGRES_USER}", "-d", "${TEST_POSTGRES_DB}"]
       interval: 10s
