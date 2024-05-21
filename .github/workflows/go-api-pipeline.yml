@@ -57,6 +57,7 @@ jobs:
           POSTGRES_USER: ${{ secrets.TEST_POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.TEST_POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.TEST_POSTGRES_DB }}
+          DATABASE_HOST: ${{ secrets.TEST_DB_HOST }}
         options: >-
           --health-cmd "pg_isready -U TEST_POSTGRES_USER -d TEST_POSTGRES_DB" 
           --health-interval 10s 
