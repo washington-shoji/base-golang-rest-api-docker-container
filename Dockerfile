@@ -26,7 +26,7 @@ COPY *.go ./
 COPY . .
 
 # if using a .env file but not recommended 
-COPY .env .
+# COPY .env .
 
 # compile application
 # RUN go build -o /build
@@ -43,7 +43,7 @@ WORKDIR /app
 COPY --from=build /app/go-api .
 
 # if using a .env file but not recommended
-COPY .env /app
+# COPY .env /app
 
 # COPY --from=build /etc/passwd /etc/passwd
 
