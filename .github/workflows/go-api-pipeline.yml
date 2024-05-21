@@ -53,7 +53,7 @@ jobs:
         image: postgres:latest
         ports:
           - 5432:5432
-        environment:
+        env:
           POSTGRES_USER: ${{ secrets.TEST_POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.TEST_POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.TEST_POSTGRES_DB }}
@@ -101,8 +101,9 @@ jobs:
     
     - name: Load db config
       run: |
-        PGPASSWORD=${{ secrets.TEST_POSTGRES_PASSWORD }} psql -h ${{ secrets.TEST_DATABASE_HOST }} -U ${{ secrets.TEST_POSTGRES_USER }} -d ${{ secrets.TEST_POSTGRES_DB }}
-
+        createuser ${{ secrets.TEST_POSTGRES_USER }} createdb --owner ${{ secrets.TEST_POSTGRES_USER }} ${{ secrets.TEST_POSTGRES_DB }}
+        psql -c "ALTER USER ${{ secrets.TEST_POSTGRES_USER }} WITH PASSWORD ${{ secrets.TEST_POSTGRES_PASSWORD }}"
+        
     - name: Run integration tests
       run: go test -v ./integration*
 
