@@ -52,8 +52,7 @@ jobs:
       postgresdb_test:
         image: postgres:latest
         ports:
-          - 5433:5432
-        restart: always
+          - 5432:5432
         env:
           POSTGRES_USER: ${{ secrets.TEST_POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.TEST_POSTGRES_PASSWORD }}
