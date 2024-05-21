@@ -98,7 +98,11 @@ jobs:
 
     - name: Set up dependencies
       run: go mod download
-
+    
+    - name: Load db config
+      run: |
+        PGPASSWORD=${{ secrets.TEST_POSTGRES_PASSWORD }} psql -h ${{ secrets.TEST_DATABASE_HOST }} -U ${{ secrets.TEST_POSTGRES_USER }} -d ${{ secrets.TEST_POSTGRES_DB }}
+        
     - name: Run integration tests
       run: go test -v ./integration*
 
