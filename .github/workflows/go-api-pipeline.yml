@@ -99,9 +99,9 @@ jobs:
     - name: Set up dependencies
       run: go mod download
     
-    - name: Set db user role
-      run: |
-        psql -U postgres CREATE ROLE ${{ secrets.TEST_POSTGRES_USER }} WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD ${{ secrets.TEST_POSTGRES_PASSWORD }}
+    # - name: Set db user role
+    #   run: |
+    #     psql -U postgres CREATE ROLE ${{ secrets.TEST_POSTGRES_USER }} WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD ${{ secrets.TEST_POSTGRES_PASSWORD }}
         
     - name: Run integration tests
       run: go test -v ./integration*
