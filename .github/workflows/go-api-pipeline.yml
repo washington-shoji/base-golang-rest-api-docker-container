@@ -99,10 +99,9 @@ jobs:
     - name: Set up dependencies
       run: go mod download
     
-    - name: Load db config
+    - name: Set db user role
       run: |
-        createuser ${{ secrets.TEST_POSTGRES_USER }} createdb --owner ${{ secrets.TEST_POSTGRES_USER }} ${{ secrets.TEST_POSTGRES_DB }}
-        psql -c "ALTER USER ${{ secrets.TEST_POSTGRES_USER }} WITH PASSWORD ${{ secrets.TEST_POSTGRES_PASSWORD }}"
+        psql -U postgres CREATE ROLE ${{ secrets.TEST_POSTGRES_USER }} WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD ${{ secrets.TEST_POSTGRES_PASSWORD }}
         
     - name: Run integration tests
       run: go test -v ./integration*
