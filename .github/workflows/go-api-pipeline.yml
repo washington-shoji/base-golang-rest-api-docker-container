@@ -57,9 +57,10 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
-          DATABASE_HOST: postgres
+          DATABASE_HOST: postgresdb_test
           DATABASE_PORT: 5432
         options: >-
+          --hostname postgresdb_test
           --health-cmd "pg_isready -U postgres -d postgres" 
           --health-interval 10s 
           --health-timeout 5s 
@@ -84,7 +85,7 @@ jobs:
         echo TEST_POSTGRES_USER=postgres >> $GITHUB_ENV
         echo TEST_POSTGRES_PASSWORD=postgres >> $GITHUB_ENV
         echo TEST_POSTGRES_DB=postgres >> $GITHUB_ENV
-        echo TEST_DATABASE_HOST=postgres >> $GITHUB_ENV
+        echo TEST_DATABASE_HOST=postgresdb_test >> $GITHUB_ENV
         echo TEST_DATABASE_PORT=5432 >> $GITHUB_ENV
         echo PGADMIN_DEFAULT_EMAIL=${{ secrets.PGADMIN_DEFAULT_EMAIL }} >> $GITHUB_ENV
         echo PGADMIN_DEFAULT_PASSWORD=${{ secrets.PGADMIN_DEFAULT_PASSWORD }} >> $GITHUB_ENV
@@ -100,9 +101,12 @@ jobs:
 
     - name: Set up dependencies
       run: go mod download
+    
+    - name: Ping Postgres Database
+      run: ping -c 4 postgresdb_test
 
     - name: Verify PostgreSQL Connection
-      run: psql -U postgres -h postgres -c "SELECT 1"
+      run: psql -U postgres -h postgresdb_test -c "SELECT 1"
     
     - name: Set db user role
       run: |
