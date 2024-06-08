@@ -29,13 +29,13 @@ jobs:
         echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> $GITHUB_ENV
         echo DATABASE_HOST=${{ secrets.DATABASE_HOST }} >> $GITHUB_ENV
         echo DATABASE_PORT=${{ secrets.DATABASE_PORT }} >> $GITHUB_ENV
-        echo TEST_POSTGRES_USER=${{ secrets.TEST_POSTGRES_USER }} >> $GITHUB_ENV
-        echo TEST_POSTGRES_PASSWORD=${{ secrets.TEST_POSTGRES_PASSWORD }} >> $GITHUB_ENV
-        echo TEST_POSTGRES_DB=${{ secrets.TEST_POSTGRES_DB }} >> $GITHUB_ENV
-        echo TEST_DATABASE_HOST=${{ secrets.TEST_DATABASE_HOST }} >> $GITHUB_ENV
-        echo TEST_DATABASE_PORT=${{ secrets.TEST_DATABASE_PORT }} >> $GITHUB_ENV
-        echo PGADMIN_DEFAULT_EMAIL=${{ secrets.PGADMIN_DEFAULT_EMAIL }} >> $GITHUB_ENV
-        echo PGADMIN_DEFAULT_PASSWORD=${{ secrets.PGADMIN_DEFAULT_PASSWORD }} >> $GITHUB_ENV
+        # echo TEST_POSTGRES_USER=${{ secrets.TEST_POSTGRES_USER }} >> $GITHUB_ENV
+        # echo TEST_POSTGRES_PASSWORD=${{ secrets.TEST_POSTGRES_PASSWORD }} >> $GITHUB_ENV
+        # echo TEST_POSTGRES_DB=${{ secrets.TEST_POSTGRES_DB }} >> $GITHUB_ENV
+        # echo TEST_DATABASE_HOST=${{ secrets.TEST_DATABASE_HOST }} >> $GITHUB_ENV
+        # echo TEST_DATABASE_PORT=${{ secrets.TEST_DATABASE_PORT }} >> $GITHUB_ENV
+        # echo PGADMIN_DEFAULT_EMAIL=${{ secrets.PGADMIN_DEFAULT_EMAIL }} >> $GITHUB_ENV
+        # echo PGADMIN_DEFAULT_PASSWORD=${{ secrets.PGADMIN_DEFAULT_PASSWORD }} >> $GITHUB_ENV
 
     - name: Set up dependencies
       run: go mod download
@@ -77,18 +77,18 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> $GITHUB_ENV
-        echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> $GITHUB_ENV
-        echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> $GITHUB_ENV
-        echo DATABASE_HOST=${{ secrets.DATABASE_HOST }} >> $GITHUB_ENV
-        echo DATABASE_PORT=${{ secrets.DATABASE_PORT }} >> $GITHUB_ENV
+        # echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> $GITHUB_ENV
+        # echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> $GITHUB_ENV
+        # echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> $GITHUB_ENV
+        # echo DATABASE_HOST=${{ secrets.DATABASE_HOST }} >> $GITHUB_ENV
+        # echo DATABASE_PORT=${{ secrets.DATABASE_PORT }} >> $GITHUB_ENV
         echo TEST_POSTGRES_USER=postgres >> $GITHUB_ENV
         echo TEST_POSTGRES_PASSWORD=postgres >> $GITHUB_ENV
         echo TEST_POSTGRES_DB=postgres >> $GITHUB_ENV
         echo TEST_DATABASE_HOST=postgresdb_test >> $GITHUB_ENV
         echo TEST_DATABASE_PORT=5432 >> $GITHUB_ENV
-        echo PGADMIN_DEFAULT_EMAIL=${{ secrets.PGADMIN_DEFAULT_EMAIL }} >> $GITHUB_ENV
-        echo PGADMIN_DEFAULT_PASSWORD=${{ secrets.PGADMIN_DEFAULT_PASSWORD }} >> $GITHUB_ENV
+        # echo PGADMIN_DEFAULT_EMAIL=${{ secrets.PGADMIN_DEFAULT_EMAIL }} >> $GITHUB_ENV
+        # echo PGADMIN_DEFAULT_PASSWORD=${{ secrets.PGADMIN_DEFAULT_PASSWORD }} >> $GITHUB_ENV
 
     - name: Wait for Postgres to be healthy
       run: |
