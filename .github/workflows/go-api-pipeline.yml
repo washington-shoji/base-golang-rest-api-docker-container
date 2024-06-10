@@ -57,7 +57,7 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
-          POSTGRES_HOST_AUTH_METHOD: trust
+          # POSTGRES_HOST_AUTH_METHOD: trust
           PGDATA: /var/lib/postgresql/data/pgdata
         options: >-
           --network-alias postgresdb
@@ -98,9 +98,9 @@ jobs:
     - name: Verify PostgreSQL Connection
       run: psql -U postgres -h localhost -c "SELECT 1"
     
-    - name: Set db user role
-      run: |
-        psql -U postgres -h localhost -c "CREATE ROLE postgres WITH SUPERUSER CREATEDB CREATEROLE LOGIN PASSWORD 'postgres'"
+    # - name: Set db user role
+    #   run: |
+    #     psql -U postgres -h localhost -c "CREATE ROLE postgres WITH SUPERUSER CREATEDB CREATEROLE LOGIN PASSWORD 'postgres'"
         
     - name: Run integration tests
       run: go test -v ./integration*
