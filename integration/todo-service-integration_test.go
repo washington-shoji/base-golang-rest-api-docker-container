@@ -72,6 +72,8 @@ func TestCreateTodoIntegration(t *testing.T) {
 	err = db.QueryRow("SELECT COUNT(*) FROM todo WHERE label=$1", "Integration Test Todo").Scan(&count)
 	assert.NoError(t, err)
 	assert.Equal(t, 1, count)
+
+	db.Query("DELETE * FROM todo")
 }
 
 func TestUpdateTodoIntegration(t *testing.T) {
@@ -97,6 +99,8 @@ func TestUpdateTodoIntegration(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "Updated Label", label)
 	assert.Equal(t, true, completed)
+
+	db.Query("DELETE * FROM todo")
 }
 
 func TestDeleteTodoIntegration(t *testing.T) {
@@ -114,6 +118,8 @@ func TestDeleteTodoIntegration(t *testing.T) {
 	err = db.QueryRow("SELECT COUNT(*) FROM todo WHERE id=$1", todoID).Scan(&count)
 	assert.NoError(t, err)
 	assert.Equal(t, 0, count)
+
+	db.Query("DELETE * FROM todo")
 }
 
 func TestFindAllTodosIntegration(t *testing.T) {
@@ -128,6 +134,8 @@ func TestFindAllTodosIntegration(t *testing.T) {
 	todos, err := todoService.FindAllTodos()
 	assert.NoError(t, err)
 	assert.Equal(t, 2, len(todos))
+
+	db.Query("DELETE * FROM todo")
 }
 
 func TestFindTodoByIDIntegration(t *testing.T) {
@@ -142,4 +150,6 @@ func TestFindTodoByIDIntegration(t *testing.T) {
 	assert.NoError(t, err)
 	assert.Equal(t, "Find Me", todo.Label)
 	assert.Equal(t, false, todo.Completed)
+
+	db.Query("DELETE * FROM todo")
 }
