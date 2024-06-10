@@ -22,21 +22,6 @@ jobs:
       with:
         go-version: 1.22.3
 
-    - name: Set environment variables
-      run: |
-        echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> $GITHUB_ENV
-        echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> $GITHUB_ENV
-        echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> $GITHUB_ENV
-        echo DATABASE_HOST=${{ secrets.DATABASE_HOST }} >> $GITHUB_ENV
-        echo DATABASE_PORT=${{ secrets.DATABASE_PORT }} >> $GITHUB_ENV
-        # echo TEST_POSTGRES_USER=${{ secrets.TEST_POSTGRES_USER }} >> $GITHUB_ENV
-        # echo TEST_POSTGRES_PASSWORD=${{ secrets.TEST_POSTGRES_PASSWORD }} >> $GITHUB_ENV
-        # echo TEST_POSTGRES_DB=${{ secrets.TEST_POSTGRES_DB }} >> $GITHUB_ENV
-        # echo TEST_DATABASE_HOST=${{ secrets.TEST_DATABASE_HOST }} >> $GITHUB_ENV
-        # echo TEST_DATABASE_PORT=${{ secrets.TEST_DATABASE_PORT }} >> $GITHUB_ENV
-        # echo PGADMIN_DEFAULT_EMAIL=${{ secrets.PGADMIN_DEFAULT_EMAIL }} >> $GITHUB_ENV
-        # echo PGADMIN_DEFAULT_PASSWORD=${{ secrets.PGADMIN_DEFAULT_PASSWORD }} >> $GITHUB_ENV
-
     - name: Set up dependencies
       run: go mod download
 
@@ -54,14 +39,14 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
-          POSTGRES_DB: postgres
+          POSTGRES_USER: ${{ secrets.TEST_POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.TEST_POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.TEST_POSTGRES_DB }}
           POSTGRES_HOST_AUTH_METHOD: trust
           PGDATA: /var/lib/postgresql/data/pgdata
         options: >-
           --network-alias postgresdb
-          --health-cmd "pg_isready -U postgres -d postgres"
+          --health-cmd "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -77,16 +62,16 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
-        echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
-        echo "POSTGRES_DB=postgres" >> $GITHUB_ENV
-        echo "DATABASE_HOST=localhost" >> $GITHUB_ENV
-        echo "DATABASE_PORT=5432" >> $GITHUB_ENV
+        echo "POSTGRES_USER=${{ secrets.TEST_POSTGRES_USER }}" >> $GITHUB_ENV
+        echo "POSTGRES_PASSWORD=${{ secrets.TEST_POSTGRES_PASSWORD }}" >> $GITHUB_ENV
+        echo "POSTGRES_DB=${{ secrets.TEST_POSTGRES_DB }}" >> $GITHUB_ENV
+        echo "DATABASE_HOST=${{ secrets.TEST_DATABASE_HOST }}" >> $GITHUB_ENV
+        echo "DATABASE_PORT=${{ secrets.TEST_DATABASE_PORT }" >> $GITHUB_ENV
 
     - name: Wait for Postgres to be healthy
       run: |
         echo "Waiting for PostgreSQL to become responsive..."
-        until psql -U "postgres" -h "localhost" -p 5432 -c '\q'; do
+        until psql -U $POSTGRES_USER -h $DATABASE_HOST -p $DATABASE_PORT -c '\q'; do
           echo "Postgres is unavailable - sleeping"
           sleep 1
         done
@@ -96,10 +81,7 @@ jobs:
       run: go mod download
 
     - name: Verify PostgreSQL Connection
-      run: psql -U "postgres" -h "localhost" -c "SELECT 1"
-
-    # - name: Create Table
-    #   run: psql -U "postgres" -h "localhost" -p 5432 -d "postgres" -c "CREATE TABLE IF NOT EXISTS todo (id uuid PRIMARY KEY NOT NULL, label VARCHAR(50) UNIQUE NOT NULL, completed BOOLEAN NOT NULL DEFAULT FALSE);"
+      run: psql -U $POSTGRES_USER -h $DATABASE_HOST -c "SELECT 1"
         
     - name: Run integration tests
       run: go test -v ./integration*
