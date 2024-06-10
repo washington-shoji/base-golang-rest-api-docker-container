@@ -48,7 +48,7 @@ jobs:
           PGDATA: /var/lib/postgresql/data/pgdata
         options: >-
           --network-alias postgresdb
-          --health-cmd "pg_isready -U ${{ secrets.TEST_POSTGRES_USER }} -d ${{ secrets.TEST_POSTGRES_DB }}"
+          --health-cmd "pg_isready -U $TEST_POSTGRES_USER -d $TEST_POSTGRES_DB"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
