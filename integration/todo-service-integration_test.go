@@ -129,6 +129,10 @@ func TestFindAllTodosIntegration(t *testing.T) {
 
 	todos, err := todoService.FindAllTodos()
 	assert.NoError(t, err)
+
+	for _, v := range todos {
+		assert.Equal(t, "Todo 1", v.Label)
+	}
 	assert.Equal(t, 2, len(todos))
 }
 
