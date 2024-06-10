@@ -100,7 +100,7 @@ jobs:
     
     - name: Set db user role
       run: |
-        psql -U postgres -h localhost -c "CREATE ROLE postgres WITH SUPERUSER CREATEDB CREATEROLE LOGIN ENCRYPTED PASSWORD postgres"
+        psql -U postgres -h localhost -c "CREATE ROLE postgres WITH SUPERUSER CREATEDB CREATEROLE LOGIN PASSWORD 'postgres'"
         
     - name: Run integration tests
       run: go test -v ./integration*
