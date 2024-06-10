@@ -46,10 +46,9 @@ jobs:
           DATABASE_PORT: ${{ secrets.TEST_TEST_DATABASE_PORT }}
           POSTGRES_HOST_AUTH_METHOD: trust
           PGDATA: /var/lib/postgresql/data/pgdata
-        options: |
+        options: >-
           --network-alias postgresdb
-          --health-cmd "pg_isready -U ${{ secrets.TEST_POSTGRES_PASSWORD }}
-            -d ${{ secrets.TEST_POSTGRES_DB }}"
+          --health-cmd "pg_isready -U "${{ secrets.TEST_POSTGRES_PASSWORD }}" -d "${{ secrets.TEST_POSTGRES_DB }}" "
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
