@@ -9,29 +9,29 @@ on:
       - main
 
 jobs:
-  # mock-tests:
-  #   name: Run Mock/Unit Tests
-  #   runs-on: ubuntu-latest
+  mock-tests:
+    name: Run Mock/Unit Tests
+    runs-on: ubuntu-latest
 
-  #   steps:
-  #   - name: Check out code
-  #     uses: actions/checkout@v4
+    steps:
+    - name: Check out code
+      uses: actions/checkout@v4
 
-  #   - name: Set up Go
-  #     uses: actions/setup-go@v3
-  #     with:
-  #       go-version: 1.22.3
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.22.3
 
-  #   - name: Set up dependencies
-  #     run: go mod download
+    - name: Set up dependencies
+      run: go mod download
 
-  #   - name: Run mock tests
-  #     run: go test ./unit* -v -run Test.*Mock
+    - name: Run mock tests
+      run: go test ./unit* -v -run Test.*Mock
 
   integration-tests:
     name: Run Integration Tests
     runs-on: ubuntu-latest
-    # needs: mock-tests
+    needs: mock-tests
 
     services:
       postgresdb_test:
@@ -92,7 +92,7 @@ jobs:
     name: Build Application
     runs-on: ubuntu-latest
     needs: [integration-tests]
-    # needs: [mock-tests, integration-tests]
+    needs: [mock-tests, integration-tests]
 
     steps:
     - name: Check out code
