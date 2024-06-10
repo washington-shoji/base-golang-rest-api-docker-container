@@ -57,8 +57,6 @@ jobs:
           POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
-          DATABASE_HOST: postgresdb
-          DATABASE_PORT: 5432
         options: >-
           --hostname postgresdb
           --health-cmd "pg_isready -U postgres -d postgres" 
@@ -77,33 +75,23 @@ jobs:
 
     - name: Set environment variables
       run: |
-        # echo POSTGRES_USER=${{ secrets.POSTGRES_USER }} >> $GITHUB_ENV
-        # echo POSTGRES_PASSWORD=${{ secrets.POSTGRES_PASSWORD }} >> $GITHUB_ENV
-        # echo POSTGRES_DB=${{ secrets.POSTGRES_DB }} >> $GITHUB_ENV
-        # echo DATABASE_HOST=${{ secrets.DATABASE_HOST }} >> $GITHUB_ENV
-        # echo DATABASE_PORT=${{ secrets.DATABASE_PORT }} >> $GITHUB_ENV
-        echo TEST_POSTGRES_USER=postgres >> $GITHUB_ENV
-        echo TEST_POSTGRES_PASSWORD=postgres >> $GITHUB_ENV
-        echo TEST_POSTGRES_DB=postgres >> $GITHUB_ENV
-        echo TEST_DATABASE_HOST=postgresdb >> $GITHUB_ENV
-        echo TEST_DATABASE_PORT=5432 >> $GITHUB_ENV
-        # echo PGADMIN_DEFAULT_EMAIL=${{ secrets.PGADMIN_DEFAULT_EMAIL }} >> $GITHUB_ENV
-        # echo PGADMIN_DEFAULT_PASSWORD=${{ secrets.PGADMIN_DEFAULT_PASSWORD }} >> $GITHUB_ENV
+        echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
+        echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
+        echo "POSTGRES_DB=postgres" >> $GITHUB_ENV
+        echo "DATABASE_HOST=postgresdb" >> $GITHUB_ENV
+        echo "DATABASE_PORT=5432" >> $GITHUB_ENV
 
     - name: Wait for Postgres to be healthy
       run: |
-        echo "Waiting for Test Postgres to be healthy..."
-        while ! docker exec $(docker ps -q -f name=postgres) pg_isready -U postgres -d postgres; do
-          echo "Waiting for Test Postgres..."
-          sleep 5
+        echo "Waiting for PostgreSQL to become responsive..."
+        until psql -U $POSTGRES_USER -h $DATABASE_HOST -p $DATABASE_PORT -c '\q'; do
+          echo "Postgres is unavailable - sleeping"
+          sleep 1
         done
-        echo "Test Postgres is ready!"
+        echo "Postgres is up and running"
 
     - name: Set up dependencies
       run: go mod download
-    
-    - name: Ping Postgres Database
-      run: ping -c 4 postgresdb
 
     - name: Verify PostgreSQL Connection
       run: psql -U postgres -h postgresdb -c "SELECT 1"
