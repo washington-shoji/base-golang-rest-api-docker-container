@@ -42,7 +42,7 @@ jobs:
           POSTGRES_USER: ${{ secrets.TEST_POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.TEST_POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.TEST_POSTGRES_DB }}
-          POSTGRES_HOST: ${{ secrets.TEST_POSTGRES_HOST }}
+          DATABASE_HOST: ${{ secrets.TEST_POSTGRES_HOST }}
           DATABASE_PORT: ${{ secrets.TEST_DATABASE_PORT }}
           POSTGRES_HOST_AUTH_METHOD: trust
           PGDATA: /var/lib/postgresql/data/pgdata
@@ -73,7 +73,7 @@ jobs:
     - name: Wait for Postgres to be healthy
       run: |
         echo "Waiting for PostgreSQL to become responsive..."
-        until psql -U $POSTGRES_USER -h $DATABASE_HOST -p $DATABASE_PORT -c '\q'; do
+        until psql -U $POSTGRES_USER -h $DATABASE_HOST -p 5432 -c '\q'; do
           echo "Postgres is unavailable - sleeping"
           sleep 1
         done
