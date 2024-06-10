@@ -42,6 +42,8 @@ jobs:
           POSTGRES_USER: ${{ secrets.TEST_POSTGRES_USER }}
           POSTGRES_PASSWORD: ${{ secrets.TEST_POSTGRES_PASSWORD }}
           POSTGRES_DB: ${{ secrets.TEST_POSTGRES_DB }}
+          POSTGRES_HOST: ${{ secrets.TEST_POSTGRES_HOST }}
+          DATABASE_PORT: ${{ secrets.TEST_DATABASE_PORT }}
           POSTGRES_HOST_AUTH_METHOD: trust
           PGDATA: /var/lib/postgresql/data/pgdata
         options: >-
