@@ -39,7 +39,7 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_USER: ${{ secrets.TEST_POSTGRES_USER }}
+          POSTGRES_USER: $TEST_POSTGRES_USER
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
           DATABASE_HOST: localhost
