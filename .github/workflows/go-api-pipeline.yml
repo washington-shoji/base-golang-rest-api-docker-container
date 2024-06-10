@@ -48,7 +48,7 @@ jobs:
           PGDATA: /var/lib/postgresql/data/pgdata
         options: >-
           --network-alias postgresdb
-          --health-cmd "pg_isready -U postgres -d ${{ secrets.TEST_POSTGRES_DB }}"
+          --health-cmd "pg_isready -U ${{ secrets.TEST_POSTGRES_USER }} -d ${{ secrets.TEST_POSTGRES_DB }}"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -66,7 +66,7 @@ jobs:
       run: |
         echo TEST_POSTGRES_USER=${{ secrets.TEST_POSTGRES_USER }} >> $GITHUB_ENV
         echo TEST_POSTGRES_PASSWORD=${{ secrets.TEST_POSTGRES_PASSWORD }} >> $GITHUB_ENV
-        echo TEST_POSTGRES_DB=${{ secrets.TEST_POSTGRES_DB } >> $GITHUB_ENV
+        echo TEST_POSTGRES_DB=${{ secrets.TEST_POSTGRES_DB }} >> $GITHUB_ENV
         echo TEST_DATABASE_HOST=${{ secrets.TEST_DATABASE_HOST }} >> $GITHUB_ENV
         echo TEST_DATABASE_PORT=${{ secrets.TEST_TEST_DATABASE_PORT }} >> $GITHUB_ENV
 
