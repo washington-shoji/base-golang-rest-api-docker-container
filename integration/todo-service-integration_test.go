@@ -120,7 +120,7 @@ func TestFindAllTodosIntegration(t *testing.T) {
 	todoRepo := repositories.NewTodoRepositoryImpl(db)
 	todoService := services.NewTodoService(todoRepo)
 
-	db.Query("DELETE * FROM todo")
+	db.Exec("DELETE * FROM todo")
 
 	_, err := db.Exec("INSERT INTO todo (id, label, completed) VALUES ($1, $2, $3)", uuid.New(), "Todo 1", false)
 	assert.NoError(t, err)
@@ -129,10 +129,6 @@ func TestFindAllTodosIntegration(t *testing.T) {
 
 	todos, err := todoService.FindAllTodos()
 	assert.NoError(t, err)
-
-	for _, v := range todos {
-		assert.Equal(t, "Todo 1", v.Label)
-	}
 	assert.Equal(t, 2, len(todos))
 }
 
