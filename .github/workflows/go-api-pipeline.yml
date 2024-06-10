@@ -48,7 +48,7 @@ jobs:
           PGDATA: /var/lib/postgresql/data/pgdata
         options: >-
           --network-alias postgresdb
-          --health-cmd "pg_isready -U $POSTGRES_USER -d $POSTGRES_DB"
+          --health-cmd "pg_isready -U postgres -d postgres"
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
@@ -73,7 +73,7 @@ jobs:
     - name: Wait for Postgres to be healthy
       run: |
         echo "Waiting for PostgreSQL to become responsive..."
-        until psql -U $POSTGRES_USER -h $DATABASE_HOST -p 5432 -c '\q'; do
+        until psql -U postgres -h localhost -p 5432 -c '\q'; do
           echo "Postgres is unavailable - sleeping"
           sleep 1
         done
@@ -83,7 +83,7 @@ jobs:
       run: go mod download
 
     - name: Verify PostgreSQL Connection
-      run: psql -U $POSTGRES_USER -h $DATABASE_HOST -c "SELECT 1"
+      run: psql -U postgres -h localhost -c "SELECT 1"
         
     - name: Run integration tests
       run: go test -v ./integration*

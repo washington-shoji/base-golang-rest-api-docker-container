@@ -56,7 +56,7 @@ services:
       DATABASE_HOST: localhost
       DATABASE_PORT: 5432
     healthcheck:
-      test: ["CMD", "pg_isready", "-U", "${TEST_POSTGRES_USER}", "-d", "${TEST_POSTGRES_DB}", "-c", "listen_addresses=*"]
+      test: ["CMD", "pg_isready", "-U", "postgres", "-d", "postgres", "-c", "listen_addresses=*"]
       interval: 10s
       timeout: 5s
       retries: 5
