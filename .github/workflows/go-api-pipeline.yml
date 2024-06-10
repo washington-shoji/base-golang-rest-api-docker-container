@@ -58,11 +58,12 @@ jobs:
           POSTGRES_PASSWORD: postgres
           POSTGRES_DB: postgres
         options: >-
-          --hostname postgresdb
-          --health-cmd "pg_isready -U postgres -d postgres" 
-          --health-interval 10s 
-          --health-timeout 5s 
+          --network-alias postgresdb
+          --health-cmd "pg_isready -U postgres -d postgres"
+          --health-interval 10s
+          --health-timeout 5s
           --health-retries 5
+          --network bridge
 
     steps:
     - name: Check out code
