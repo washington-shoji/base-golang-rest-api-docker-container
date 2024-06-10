@@ -49,7 +49,7 @@ jobs:
     needs: mock-tests
 
     services:
-      postgresdb:
+      postgresdb_test:
         image: postgres:latest
         ports:
           - 5432:5432
