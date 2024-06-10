@@ -80,13 +80,13 @@ jobs:
         echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
         echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
         echo "POSTGRES_DB=postgres" >> $GITHUB_ENV
-        echo "DATABASE_HOST=postgresdb_test" >> $GITHUB_ENV
+        echo "DATABASE_HOST=localhost" >> $GITHUB_ENV
         echo "DATABASE_PORT=5432" >> $GITHUB_ENV
 
     - name: Wait for Postgres to be healthy
       run: |
         echo "Waiting for PostgreSQL to become responsive..."
-        until psql -U $POSTGRES_USER -h $DATABASE_HOST -p $DATABASE_PORT -c '\q'; do
+        until psql -U "postgres" -h "localhost" -p 5432 -c '\q'; do
           echo "Postgres is unavailable - sleeping"
           sleep 1
         done
