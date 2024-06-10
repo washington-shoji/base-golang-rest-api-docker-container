@@ -46,6 +46,7 @@ jobs:
   integration-tests:
     name: Run Integration Tests
     runs-on: ubuntu-latest
+    container: "ubuntu:latest"
     needs: mock-tests
 
     services:
