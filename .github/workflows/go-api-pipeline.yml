@@ -62,11 +62,11 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo "POSTGRES_USER=${{ secrets.TEST_POSTGRES_USER }}" >> $GITHUB_ENV
-        echo "POSTGRES_PASSWORD=${{ secrets.TEST_POSTGRES_PASSWORD }}" >> $GITHUB_ENV
-        echo "POSTGRES_DB=${{ secrets.TEST_POSTGRES_DB }}" >> $GITHUB_ENV
-        echo "DATABASE_HOST=${{ secrets.TEST_DATABASE_HOST }}" >> $GITHUB_ENV
-        echo "DATABASE_PORT=${{ secrets.TEST_DATABASE_PORT }" >> $GITHUB_ENV
+        echo "POSTGRES_USER=${{ secrets.TEST_POSTGRES_USER }} >> $GITHUB_ENV
+        echo "POSTGRES_PASSWORD=${{ secrets.TEST_POSTGRES_PASSWORD }} >> $GITHUB_ENV
+        echo "POSTGRES_DB=${{ secrets.TEST_POSTGRES_DB }} >> $GITHUB_ENV
+        echo "DATABASE_HOST=${{ secrets.TEST_DATABASE_HOST }} >> $GITHUB_ENV
+        echo "DATABASE_PORT=${{ secrets.TEST_DATABASE_PORT } >> $GITHUB_ENV
 
     - name: Wait for Postgres to be healthy
       run: |
