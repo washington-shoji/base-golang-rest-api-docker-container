@@ -78,7 +78,7 @@ jobs:
         echo "POSTGRES_USER=postgres" >> $GITHUB_ENV
         echo "POSTGRES_PASSWORD=postgres" >> $GITHUB_ENV
         echo "POSTGRES_DB=postgres" >> $GITHUB_ENV
-        echo "DATABASE_HOST=postgresdb" >> $GITHUB_ENV
+        echo "DATABASE_HOST=localhost" >> $GITHUB_ENV
         echo "DATABASE_PORT=5432" >> $GITHUB_ENV
 
     - name: Wait for Postgres to be healthy
