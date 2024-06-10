@@ -96,7 +96,10 @@ jobs:
       run: go mod download
 
     - name: Verify PostgreSQL Connection
-      run: psql -U postgres -h localhost -c "SELECT 1"
+      run: psql -U "postgres" -h "localhost" -c "SELECT 1"
+
+    - name: Create Table
+      run: psql -U "postgres" -h "localhost" -p 5432 -d "postgres" -c "CREATE TABLE IF NOT EXISTS todo (id uuid PRIMARY KEY NOT NULL, label VARCHAR(50) UNIQUE NOT NULL, completed BOOLEAN NOT NULL DEFAULT FALSE);"
     
     # - name: Set db user role
     #   run: |
