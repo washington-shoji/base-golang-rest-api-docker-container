@@ -39,11 +39,11 @@ jobs:
         ports:
           - 5432:5432
         env:
-          POSTGRES_USER: ${{ secrets.TEST_POSTGRES_USER }}
-          POSTGRES_PASSWORD: ${{ secrets.TEST_POSTGRES_PASSWORD }}
-          POSTGRES_DB: ${{ secrets.TEST_POSTGRES_DB }}
-          DATABASE_HOST: ${{ secrets.TEST_POSTGRES_HOST }}
-          DATABASE_PORT: ${{ secrets.TEST_DATABASE_PORT }}
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: postgres
+          DATABASE_HOST: localhost
+          DATABASE_PORT: 5432
           POSTGRES_HOST_AUTH_METHOD: trust
           PGDATA: /var/lib/postgresql/data/pgdata
         options: >-
@@ -64,11 +64,11 @@ jobs:
 
     - name: Set environment variables
       run: |
-        echo TEST_POSTGRES_USER=${{ secrets.TEST_POSTGRES_USER }} >> $GITHUB_ENV
-        echo TEST_POSTGRES_PASSWORD=${{ secrets.TEST_POSTGRES_PASSWORD }} >> $GITHUB_ENV
-        echo TEST_POSTGRES_DB=${{ secrets.TEST_POSTGRES_DB }} >> $GITHUB_ENV
-        echo TEST_DATABASE_HOST=${{ secrets.TEST_DATABASE_HOST }} >> $GITHUB_ENV
-        echo TEST_DATABASE_PORT=${{ secrets.TEST_DATABASE_PORT }} >> $GITHUB_ENV
+        echo TEST_POSTGRES_USER=postgres >> $GITHUB_ENV
+        echo TEST_POSTGRES_PASSWORD=postgres >> $GITHUB_ENV
+        echo TEST_POSTGRES_DB=postgres >> $GITHUB_ENV
+        echo TEST_DATABASE_HOST=localhost >> $GITHUB_ENV
+        echo TEST_DATABASE_PORT=5432 >> $GITHUB_ENV
 
     - name: Wait for Postgres to be healthy
       run: |
