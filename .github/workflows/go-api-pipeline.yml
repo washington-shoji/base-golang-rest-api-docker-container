@@ -96,7 +96,7 @@ jobs:
       run: go mod download
 
     - name: Verify PostgreSQL Connection
-      run: psql -U postgres -h postgresdb -c "SELECT 1"
+      run: psql -U postgres -h localhost -c "SELECT 1"
     
     - name: Set db user role
       run: |
