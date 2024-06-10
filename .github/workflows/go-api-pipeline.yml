@@ -46,7 +46,6 @@ jobs:
   integration-tests:
     name: Run Integration Tests
     runs-on: ubuntu-latest
-    container: "postgres_test_container"
     needs: mock-tests
 
     services:
