@@ -53,7 +53,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
-      DATABASE_HOST: integration-tests
+      DATABASE_HOST: postgresdb_test
     healthcheck:
       test: ["CMD", "pg_isready", "-U", "postgres", "-d", "postgres", "-c", "listen_addresses=*"]
       interval: 10s
