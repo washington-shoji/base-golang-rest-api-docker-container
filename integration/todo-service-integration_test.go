@@ -60,7 +60,16 @@ func TestTodoIntegration(t *testing.T) {
 	todoRepo := repositories.NewTodoRepositoryImpl(db)
 	todoService := services.NewTodoService(todoRepo)
 
+	clearTable := func() {
+		_, err := db.Exec("DELETE FROM todo")
+		if err != nil {
+			t.Fatalf("Failed to clear todo table: %v", err)
+		}
+	}
+
 	t.Run("CreateTodo", func(t *testing.T) {
+		clearTable() // Clear the table before running the test
+
 		todo := &models.Todo{
 			Label:     "Integration Test Todo",
 			Completed: false,
@@ -76,6 +85,8 @@ func TestTodoIntegration(t *testing.T) {
 	})
 
 	t.Run("UpdateTodo", func(t *testing.T) {
+		clearTable() // Clear the table before running the test
+
 		todoID := uuid.New()
 		_, err := db.Exec("INSERT INTO todo (id, label, completed) VALUES ($1, $2, $3)", todoID, "Old Label", false)
 		assert.NoError(t, err)
@@ -98,6 +109,8 @@ func TestTodoIntegration(t *testing.T) {
 	})
 
 	t.Run("DeleteTodo", func(t *testing.T) {
+		clearTable() // Clear the table before running the test
+
 		todoID := uuid.New()
 		_, err := db.Exec("INSERT INTO todo (id, label, completed) VALUES ($1, $2, $3)", todoID, "Delete Me", false)
 		assert.NoError(t, err)
@@ -112,7 +125,7 @@ func TestTodoIntegration(t *testing.T) {
 	})
 
 	t.Run("FindAllTodos", func(t *testing.T) {
-		db.Exec("DELETE * FROM todo")
+		clearTable() // Clear the table before running the test
 
 		_, err := db.Exec("INSERT INTO todo (id, label, completed) VALUES ($1, $2, $3)", uuid.New(), "Todo 1", false)
 		assert.NoError(t, err)
@@ -125,6 +138,8 @@ func TestTodoIntegration(t *testing.T) {
 	})
 
 	t.Run("FindTodoByID", func(t *testing.T) {
+		clearTable() // Clear the table before running the test
+
 		todoID := uuid.New()
 		_, err := db.Exec("INSERT INTO todo (id, label, completed) VALUES ($1, $2, $3)", todoID, "Find Me", false)
 		assert.NoError(t, err)
