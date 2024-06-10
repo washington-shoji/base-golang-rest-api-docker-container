@@ -23,7 +23,7 @@ services:
       postgresdb:
         condition: service_healthy
     networks:
-      - developing
+      - postgres_network
 
   postgresdb:
     container_name: postgres_container
@@ -88,8 +88,6 @@ services:
 # Networks to be created to facilitate communication between containers
 networks:
   postgres_network:
-  developing:
-    driver: bridge
 
 volumes:
   app-api:
