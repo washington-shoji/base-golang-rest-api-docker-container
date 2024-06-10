@@ -69,7 +69,7 @@ func TestCreateTodoIntegration(t *testing.T) {
 	assert.NoError(t, err)
 
 	var count int
-	err = db.QueryRow("SELECT COUNT(*) FROM todos WHERE label=$1", "Integration Test Todo").Scan(&count)
+	err = db.QueryRow("SELECT COUNT(*) FROM todo WHERE label=$1", "Integration Test Todo").Scan(&count)
 	assert.NoError(t, err)
 	assert.Equal(t, 1, count)
 }
@@ -79,7 +79,7 @@ func TestUpdateTodoIntegration(t *testing.T) {
 	todoService := services.NewTodoService(todoRepo)
 
 	todoID := uuid.New()
-	_, err := db.Exec("INSERT INTO todos (id, label, completed) VALUES ($1, $2, $3)", todoID, "Old Label", false)
+	_, err := db.Exec("INSERT INTO todo (id, label, completed) VALUES ($1, $2, $3)", todoID, "Old Label", false)
 	assert.NoError(t, err)
 
 	updatedTodo := &models.Todo{
@@ -93,7 +93,7 @@ func TestUpdateTodoIntegration(t *testing.T) {
 
 	var label string
 	var completed bool
-	err = db.QueryRow("SELECT label, completed FROM todos WHERE id=$1", todoID).Scan(&label, &completed)
+	err = db.QueryRow("SELECT label, completed FROM todo WHERE id=$1", todoID).Scan(&label, &completed)
 	assert.NoError(t, err)
 	assert.Equal(t, "Updated Label", label)
 	assert.Equal(t, true, completed)
@@ -104,14 +104,14 @@ func TestDeleteTodoIntegration(t *testing.T) {
 	todoService := services.NewTodoService(todoRepo)
 
 	todoID := uuid.New()
-	_, err := db.Exec("INSERT INTO todos (id, label, completed) VALUES ($1, $2, $3)", todoID, "Delete Me", false)
+	_, err := db.Exec("INSERT INTO todo (id, label, completed) VALUES ($1, $2, $3)", todoID, "Delete Me", false)
 	assert.NoError(t, err)
 
 	err = todoService.DeleteTodo(todoID)
 	assert.NoError(t, err)
 
 	var count int
-	err = db.QueryRow("SELECT COUNT(*) FROM todos WHERE id=$1", todoID).Scan(&count)
+	err = db.QueryRow("SELECT COUNT(*) FROM todo WHERE id=$1", todoID).Scan(&count)
 	assert.NoError(t, err)
 	assert.Equal(t, 0, count)
 }
@@ -120,9 +120,9 @@ func TestFindAllTodosIntegration(t *testing.T) {
 	todoRepo := repositories.NewTodoRepositoryImpl(db)
 	todoService := services.NewTodoService(todoRepo)
 
-	_, err := db.Exec("INSERT INTO todos (id, label, completed) VALUES ($1, $2, $3)", uuid.New(), "Todo 1", false)
+	_, err := db.Exec("INSERT INTO todo (id, label, completed) VALUES ($1, $2, $3)", uuid.New(), "Todo 1", false)
 	assert.NoError(t, err)
-	_, err = db.Exec("INSERT INTO todos (id, label, completed) VALUES ($1, $2, $3)", uuid.New(), "Todo 2", true)
+	_, err = db.Exec("INSERT INTO todo (id, label, completed) VALUES ($1, $2, $3)", uuid.New(), "Todo 2", true)
 	assert.NoError(t, err)
 
 	todos, err := todoService.FindAllTodos()
@@ -135,7 +135,7 @@ func TestFindTodoByIDIntegration(t *testing.T) {
 	todoService := services.NewTodoService(todoRepo)
 
 	todoID := uuid.New()
-	_, err := db.Exec("INSERT INTO todos (id, label, completed) VALUES ($1, $2, $3)", todoID, "Find Me", false)
+	_, err := db.Exec("INSERT INTO todo (id, label, completed) VALUES ($1, $2, $3)", todoID, "Find Me", false)
 	assert.NoError(t, err)
 
 	todo, err := todoService.FindTodoByID(todoID)
